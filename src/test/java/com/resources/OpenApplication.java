@@ -8,12 +8,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
 
 public class OpenApplication {
 
-    WebDriver driver;
-    @Test
+    public WebDriver driver;
+
+    @BeforeTest
     public void openBrowser() throws Exception {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
@@ -26,8 +26,6 @@ public class OpenApplication {
         String url = dotenv.get("pageURL");
         System.out.println(url);
         driver.get(url);
-        LoginPage loginPage=new LoginPage();
-        loginPage.login(driver);
     }
 
     @AfterTest
