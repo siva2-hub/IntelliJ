@@ -14,5 +14,6 @@ public class LoginPage {
         po= new PageObjects();
         po.email.sendKeys("defaultuser@enterpi.com");
         po.password.sendKeys("Enter@4321");
+        po.signIn.click();
     }
 }
