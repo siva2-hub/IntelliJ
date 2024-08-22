@@ -39,14 +39,14 @@ public class QuotesPage extends OpenApplication {
     }
 
     public boolean verifyCreateQuote(String compName, String quoteType) throws Exception {
-//        this.createQuote(compName, quoteType);
-        loginPage.login();
-        loginPage.driver.get("https://buzzworld-web-iidm.enterpi.com/all_quotes/3692b3bb-ecf5-443a-bb1b-f3dbf5f956d4");
+        this.createQuote(compName, quoteType);
+        //loginPage.login();
+        //loginPage.driver.get("https://buzzworld-web-iidm.enterpi.com/all_quotes/3692b3bb-ecf5-443a-bb1b-f3dbf5f956d4");
         loginPage.wait.until(ExpectedConditions.visibilityOf(loginPage.po.quoteItems));
         boolean res;
         try {
             res = loginPage.po.quoteItems.isDisplayed();
-            String quoteNumber = loginPage.driver.findElement(By.xpath("//*[@class='id-num']")).getText().replace("#", "");
+            String quoteNumber = loginPage.po.repQuoteId.getText().replace("#", "");
             System.out.println("Quote is Created with: " + quoteNumber);
             System.out.println(loginPage.driver.getCurrentUrl());
         } catch (Exception e) {
@@ -58,7 +58,7 @@ public class QuotesPage extends OpenApplication {
     }
 
     public boolean selectDropDown(String compName) {
-        List<WebElement> values = loginPage.driver.findElements(By.xpath("//*[contains(@class,'css-4mp3pp-menu')]/div/div"));
+        List<WebElement> values = loginPage.po.reactDropDownLists;
         boolean res = false;
         for (int i = 0; i < values.size(); i++) {
             if (values.get(i).getText().contains(compName)) {
