@@ -1,8 +1,10 @@
 package com.pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
+
+import java.util.List;
 
 public class PageObjects {
 
@@ -27,6 +29,8 @@ public class PageObjects {
     WebElement createQuote3;
     @FindBy(xpath = "(//*[text()='Quotes'])[1]")
     WebElement quotes;
+    @FindBy(className = "id-num")
+    WebElement repQuoteId;
     @FindBy(xpath = "//*[contains(text(), 'Quote Items')]")
     WebElement quoteItems;
     @FindBy(xpath = "(//*[contains(@class,'react-select__indicators')])[1]")
@@ -41,4 +45,6 @@ public class PageObjects {
     WebElement fifthReactInput;
     @FindBy(xpath = "//*[text()='Loading...']")
     WebElement loading;
+    @FindBys({@FindBy(xpath = "//*[contains(@class,'css-4mp3pp-menu')]/div/div")})
+    List<WebElement> reactDropDownLists;
 }
