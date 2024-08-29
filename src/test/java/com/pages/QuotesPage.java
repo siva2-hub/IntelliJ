@@ -61,8 +61,8 @@ public class QuotesPage extends OpenApplication {
         return values;
     }
     public int[] addItemsToQuote(String item) throws Exception {
-//        loginPage.login();
-//        loginPage.driver.get("https://buzzworld-web-iidm.enterpi.com/all_quotes/b56c5732-24a7-4ca2-9f9e-8ed5050b18ac");
+        //loginPage.login();
+        //loginPage.driver.get("https://buzzworld-web-iidm.enterpi.com/all_quotes/b56c5732-24a7-4ca2-9f9e-8ed5050b18ac");
         Thread.sleep(1200);
         loginPage.wait.until(ExpectedConditions.visibilityOf(loginPage.elements("Add Items")));
         Thread.sleep(2000);
