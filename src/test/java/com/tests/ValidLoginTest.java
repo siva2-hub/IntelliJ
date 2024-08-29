@@ -9,7 +9,7 @@ import org.testng.asserts.Assertion;
 public class ValidLoginTest extends OpenApplication {
     @Test
     public void loginTest() throws Exception {
-        LoginPage loginPage = new LoginPage();
+        LoginPage loginPage = new LoginPage(driver);
         boolean testStatus = loginPage.verifyLoginValid();
         Assert.assertTrue(testStatus);
     }
