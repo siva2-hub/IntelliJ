@@ -4,15 +4,18 @@ import com.resources.OpenApplication;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class QuotesPage extends OpenApplication {
 
-    LoginPage loginPage = new LoginPage();
+    private static final Logger log = LoggerFactory.getLogger(QuotesPage.class);
+    LoginPage loginPage = new LoginPage(driver);
 
     public void createQuote(String compName, String quoteType) throws Exception {
-        loginPage.login();
+        loginPage.login("", "");
         boolean getResults;
         loginPage.po.quotes.click();
         loginPage.wait.until(ExpectedConditions.visibilityOf(loginPage.po.companyLogo));
@@ -37,24 +40,63 @@ public class QuotesPage extends OpenApplication {
             }
         }
     }
-
-    public boolean verifyCreateQuote(String compName, String quoteType) throws Exception {
-        this.createQuote(compName, quoteType);
-        //loginPage.login();
-        //loginPage.driver.get("https://buzzworld-web-iidm.enterpi.com/all_quotes/3692b3bb-ecf5-443a-bb1b-f3dbf5f956d4");
+    public Object[] verifyCreateQuote(String compName, String quoteType) throws Exception {
+        //this.createQuote(compName, quoteType);
+        loginPage.login("","");
+        loginPage.driver.get("https://buzzworld-web-iidm.enterpi.com/all_quotes/3692b3bb-ecf5-443a-bb1b-f3dbf5f956d4");
         loginPage.wait.until(ExpectedConditions.visibilityOf(loginPage.po.quoteItems));
-        boolean res;
+        boolean res; String quoteNumber=""; String quoteUrl="";
         try {
             res = loginPage.po.quoteItems.isDisplayed();
-            String quoteNumber = loginPage.po.repQuoteId.getText().replace("#", "");
+            quoteNumber = loginPage.po.repQuoteId.getText().replace("#", "");
             System.out.println("Quote is Created with: " + quoteNumber);
-            System.out.println(loginPage.driver.getCurrentUrl());
+            quoteUrl = loginPage.driver.getCurrentUrl();
+            System.out.println("Quote page URL: "+quoteUrl);
         } catch (Exception e) {
             res = false;
         }
         Thread.sleep(1400);
-        loginPage.openApplication.closeBrowser();
-        return res;
+        //loginPage.openApplication.closeBrowser();
+        Object[] values = {res, quoteNumber, quoteUrl};
+        return values;
+    }
+    public int[] addItemsToQuote(String item) throws Exception {
+        //loginPage.login();
+        //loginPage.driver.get("https://buzzworld-web-iidm.enterpi.com/all_quotes/b56c5732-24a7-4ca2-9f9e-8ed5050b18ac");
+        Thread.sleep(1200);
+        loginPage.wait.until(ExpectedConditions.visibilityOf(loginPage.elements("Add Items")));
+        Thread.sleep(2000);
+        String originalText = loginPage.po.quoteItems.getText();
+        String n = originalText.substring(13, (originalText.length()-1));
+        int itemsCountBeforeAdd = Integer.parseInt(n);
+        loginPage.po.addItems.click();
+        loginPage.po.partsSearch.sendKeys(item);
+        Thread.sleep(2000);
+        loginPage.wait.until(ExpectedConditions.visibilityOf(loginPage.elements(item)));
+        loginPage.po.itemCheckBox.click();
+        loginPage.po.addSelectedItems.click();
+        Thread.sleep(2000);
+        loginPage.wait.until(ExpectedConditions.visibilityOf(loginPage.elements("Add Options")));
+        originalText = loginPage.po.quoteItems.getText();
+        n = originalText.substring(13, (originalText.length()-1));
+        int itemsCountAfterAdd = Integer.parseInt(n); boolean res;
+        int[] vals = {itemsCountBeforeAdd, itemsCountAfterAdd};
+        return vals;
+    }
+    public Object[] verifyAddItemsToQuote(String item) throws Exception {
+        boolean res;
+        int[] itemsCount=this.addItemsToQuote(item);
+        if (itemsCount[0]<itemsCount[1]){
+            res=true;
+        }else{res=false;}
+        Object[] vals = {itemsCount[0], itemsCount[1], res};
+        return vals;
+    }
+    public void approveQuote(String item) throws Exception {
+        this.verifyAddItemsToQuote(item);
+        loginPage.po.itemSelCheckBox.click();
+        loginPage.po.bulkEdit.click();
+        loginPage.wait.until(ExpectedConditions.visibilityOf(loginPage.elements(item)));
     }
 
     public boolean selectDropDown(String compName) {

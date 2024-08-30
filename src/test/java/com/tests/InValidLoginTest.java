@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 @Test
 public class InValidLoginTest extends OpenApplication {
     public void inValidLoginTest() throws Exception{
-        LoginPage loginPage = new LoginPage();
+        LoginPage loginPage = new LoginPage(driver);
         boolean testStatus = loginPage.verifyInValidLogin();
         Assert.assertTrue(testStatus);
     }

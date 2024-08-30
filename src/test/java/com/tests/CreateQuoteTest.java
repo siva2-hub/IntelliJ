@@ -10,8 +10,8 @@ public class CreateQuoteTest extends OpenApplication {
     @Test
     public void createQuoteTest() throws Exception {
         QuotesPage quotesPage = new QuotesPage();
-        boolean testResults = quotesPage.verifyCreateQuote("MULTI00", "Parts Quote");
-        Assert.assertTrue(testResults);
+        Object[] testResults = quotesPage.verifyCreateQuote("MULTI00", "Parts Quote");
+        Assert.assertTrue((Boolean) testResults[0]);
     }
 
 }
